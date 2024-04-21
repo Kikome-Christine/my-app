@@ -2,16 +2,38 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 
+class_info = {
+    'Bohera': {'biological_name': 'Terminalia bellirica', 'uses': 'treats asthma, bronchitis, hepatitis, diarrhoea, piles, dyspepsia, eye diseases, hoarseness of voice, scorpion-sting, hair tonic and menstrual disorders.'},
+    'Devilbackbone': {'biological_name': 'Euphorbia tithymaloides', 'uses': 'treats asthma, persistent coughing, laryngitis, mouth ulcers, and venereal disease.'},
+    'Haritoki': {'biological_name': 'Terminalia chebula', 'uses': 'treats scalp infections like dandruff, itching and hair fall.'},
+    'Lemongrass': {'biological_name': 'Cymbopogon citratus', 'uses': 'treats digestive tract spasms, stomachache, high blood pressure, convulsions, pain, vomiting, cough, achy joints (rheumatism), fever'},
+    'Nayontara': {'biological_name': 'Catharanthus roseus', 'uses': ' treats a host of health anomalies including diabetes, sore throat, lung congestion, skin infections, eye irritation'},
+    'Neem': {'biological_name': 'Azadirachta indica', 'uses': 'treats leprosy, eye disorders, bloody nose, intestinal worms, stomach upset, loss of appetite, skin ulcers, diseases of the heart and blood vessels (cardiovascular disease), fever, diabetes, gum disease (gingivitis), and liver problems'},
+    'Pathorkuchi': {'biological_name': 'Kalanchoe pinnata', 'uses': 'used to expel kidney stones, reduce blood sugar levels and inhibit the growth of microbes.'},
+    'Thankuni': {'biological_name': 'Centella asiatica', 'uses': 'improves digestion, enhancing memory and cognitive function, and promoting overall well-being'},
+    'Tulsi': {'biological_name': 'Ocimum tenuiflorum', 'uses': 'treats heart disease and fever, respiratory problems,cure fever, common cold and sore throat, headaches and kidney stones.'},
+    'Zenora': {'biological_name': 'longevity spinach', 'uses': 'treats diabetes, fever, kidney ailments and dysentery'}
+}
+
 
 #Tensorflow Model Prediction
+# def model_prediction(test_image):
+#     model = tf.keras.models.load_model(" trained_medical_plant_model.keras")
+#     image = tf.keras.preprocessing.image.load_img(test_image,target_size=(128,128))
+#     input_arr = tf.keras.preprocessing.image.img_to_array(image)
+#     input_arr = np.array([input_arr]) #convert single image to batch
+#     predictions = model.predict(input_arr)
+#     return np.argmax(predictions) #return index of max element
+# Tensorflow Model Prediction
 def model_prediction(test_image):
-    model = tf.keras.models.load_model(" trained_medical_plant_model.keras")
-    image = tf.keras.preprocessing.image.load_img(test_image,target_size=(128,128))
+    model = tf.keras.models.load_model("trained_medical_plant_model.keras")
+    image = tf.keras.preprocessing.image.load_img(test_image, target_size=(128, 128))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
-    input_arr = np.array([input_arr]) #convert single image to batch
+    input_arr = np.array([input_arr])  # Convert single image to batch
     predictions = model.predict(input_arr)
-    return np.argmax(predictions) #return index of max element
-
+    class_index = np.argmax(predictions)
+    class_name = list(class_info.keys())[class_index]
+    return class_name
 
 
 
@@ -95,21 +117,32 @@ elif app_mode == "About":
 elif app_mode == "Species Identification":
     st.header("Species Identification")
     test_image = st.file_uploader("Choose an Image:")
-    if(st.button("Show Image")):
-      st.image(test_image,width=4,use_column_width=True)
-    if(st.button("Predict")):
-      st.snow()
-      st.write("Our Prediction")
-      result_index = model_prediction(test_image)
-      class_name = {'Bohera': 'Terminalia bellirica',
-                    'Devilbackbone': 'Euphorbia tithymaloides',
-                    'Haritoki': 'Terminalia chebula',
-                    'Lemongrass': 'Cymbopogon citratus',
-                    'Nayontara': 'Catharanthus roseus',
-                    'Neem': 'Azadirachta indica',
-                    'Pathorkuchi': 'Kalanchoe pinnata',
-                    'Thankuni': 'Centella asiatica',
-                    'Tulsi': 'Ocimum tenuiflorum',
-                    'Zenora': ''}
+    # if(st.button("Show Image")):
+    #   st.image(test_image,width=4,use_column_width=True)
+    if st.button("Show Image") and test_image is not None:
+        st.image(test_image, width=200, caption='Uploaded Image', use_column_width=True)
+    # if(st.button("Predict")):
+    #   st.snow()
+    #   st.write("Our Prediction")
+    #   result_index = model_prediction(test_image)
+    #   class_name = {'Bohera': 'Terminalia bellirica',
+    #                 'Devilbackbone': 'Euphorbia tithymaloides',
+    #                 'Haritoki': 'Terminalia chebula',
+    #                 'Lemongrass': 'Cymbopogon citratus',
+    #                 'Nayontara': 'Catharanthus roseus',
+    #                 'Neem': 'Azadirachta indica',
+    #                 'Pathorkuchi': 'Kalanchoe pinnata',
+    #                 'Thankuni': 'Centella asiatica',
+    #                 'Tulsi': 'Ocimum tenuiflorum',
+    #                 'Zenora': ''}
 
-      st.success("Model is Predicting it's a {}".format(class_name[result_index]))
+    #   st.success("Model is Predicting it's a {}".format(class_name[result_index]))
+if st.button("Predict") and test_image is not None:
+        result_class = model_prediction(test_image)
+
+        biological_name = class_info[result_class]['biological_name']
+        uses = class_info[result_class]['uses']
+        
+        st.success(f"Predicted Plant Class: {result_class}")
+        st.info(f"Biological Name: {biological_name}")
+        st.info(f"Uses: {uses}")
