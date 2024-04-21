@@ -26,7 +26,7 @@ class_info = {
 #     return np.argmax(predictions) #return index of max element
 # Tensorflow Model Prediction
 def model_prediction(test_image):
-    model = tf.keras.models.load_model("trained_medical_plant_model.keras")
+    model = tf.keras.models.load_model("Transparent_Machine_Vision_Medicinal_Plant_Model.keras")
     image = tf.keras.preprocessing.image.load_img(test_image, target_size=(128, 128))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
     input_arr = np.array([input_arr])  # Convert single image to batch
