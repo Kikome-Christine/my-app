@@ -26,7 +26,7 @@ class_info = {
 #     return np.argmax(predictions) #return index of max element
 # Tensorflow Model Prediction
 def model_prediction(test_image):
-    model = tf.keras.models.load_model("Transparent_Machine_Vision_Medicinal_Plant_Model.keras")
+    model = tf.keras.models.load_model("Transparent_Machine_Vision_Medicinal_Plant_Model.h5")
     image = tf.keras.preprocessing.image.load_img(test_image, target_size=(128, 128))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
     input_arr = np.array([input_arr])  # Convert single image to batch
@@ -45,7 +45,7 @@ app_mode = st.sidebar.selectbox("Select Page", ["Home", "About", "Species Identi
 
 if app_mode == "Home":
     st.header("Identifying Medical Plant Species ")
-    st.image("/content/neem-tree-2-scaled.jpeg", use_column_width=True)
+    st.image("(25).jpeg", use_column_width=True)
     st.markdown("""
         Welcome to the Medical Plant Species Identification System! 🌿🔍
 
@@ -96,22 +96,22 @@ elif app_mode == "About":
 
     # Define team members with their names and image paths
     team_members = {
-        'OKUMU GEOFFERY (Project Lead)': '/content/OKUMU.jpg',
-        'KIKOME CHRISTINE (Machine Learning Engineer)': '/content/1.jpg',
-        'WAGISHA EMMANUEL (Web Developer)': '/content/WAGISHA.jpg'
+        'OKUMU GEOFFERY (Project Lead)': 'OKUMU.jpg',
+        'KIKOME CHRISTINE (Machine Learning Engineer)': '1.jpg',
+        'WAGISHA EMMANUEL (Web Developer)': 'WAGISHA.jpg'
     }
 
     # Display team members' names and images horizontally with circular images
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.image('/content/OKUMU.jpg', width=100, use_column_width=False, caption='OKUMU GEOFFERY (Project Lead)', output_format='PNG')
+        st.image('OKUMU.jpg', width=100, use_column_width=False, caption='OKUMU GEOFFERY (Project Lead)', output_format='PNG')
 
     with col2:
-        st.image('/content/1.jpg', width=100, use_column_width=False, caption='KIKOME CHRISTINE (Machine Learning Engineer)', output_format='PNG')
+        st.image('1.jpg', width=100, use_column_width=False, caption='KIKOME CHRISTINE (Machine Learning Engineer)', output_format='PNG')
 
     with col3:
-        st.image('/content/WAGISHA.jpg', width=100, use_column_width=False, caption='WAGISHA EMMANUEL (Web Developer)', output_format='PNG')
+        st.image('WAGISHA.jpg', width=100, use_column_width=False, caption='WAGISHA EMMANUEL (Web Developer)', output_format='PNG')
 
 #Prediction Page
 elif app_mode == "Species Identification":
